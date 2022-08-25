@@ -5,7 +5,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from django.contrib.auth.forms import UserCreationForm
-from .models import Room, Topic
+from .models import Room, Topic, Message
 from .forms import RoomForm
 from .models import User
 
@@ -16,11 +16,6 @@ def logout_user(request):
 
 
 def login_page(request):
-    print("____________________")
-    print("____________________")
-    print(request)
-    print("____________________")
-    print("____________________")
     page = 'login'
     context = {'page': page}
     if request.user.is_authenticated:
@@ -77,7 +72,13 @@ def home(request):
 
 def room(request, pk):
     room = Room.objects.get(id=pk)
-    context = {"room": room}
+    messages_room = room.message_set.all().order_by('-created')
+
+    if request.method == "POST":
+        message = Message.objects.create(user=request.user, room=room, body=request.POST.get('body'))
+        return redirect('room', pk=room.id)
+
+    context = {"room": room, "messages_room": messages_room}
     return render(request, 'base/room.html', context)
 
 
