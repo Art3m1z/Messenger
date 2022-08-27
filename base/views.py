@@ -75,7 +75,7 @@ def home(request):
 
 def room(request, pk):
     room = Room.objects.get(id=pk)
-    messages_room = room.message_set.all().order_by('-created')
+    messages_room = room.message_set.all()
     participants = room.participants.all()
 
     if request.method == "POST":
@@ -85,6 +85,17 @@ def room(request, pk):
 
     context = {"room": room, "messages_room": messages_room, "participants": participants}
     return render(request, 'base/room.html', context)
+
+
+def user_profile(request, pk):
+    user = User.objects.get(id=pk)
+    rooms = user.room_set.all()
+    room_messages = user.message_set.all()
+    topics = Topic.objects.all()
+    context = {"user": user, "rooms": rooms, "room_messages": room_messages,
+               "topics": topics,
+               }
+    return render(request, 'base/profile.html', context)
 
 
 @login_required(login_url='login')
@@ -106,7 +117,9 @@ def create_room(request):
     if request.method == "POST":  # /проверить значения/
         form = RoomForm(request.POST)
         if form.is_valid():  # /проверить значения/
-            form.save()
+            room = form.save(commit=False)
+            room.host = request.user
+            room.save()
             return redirect('home')
 
     context = {"form": form}
