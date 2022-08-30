@@ -52,6 +52,7 @@ def register_page(request):
             return redirect("home")
         else:
             messages.error(request, 'Something goes wrong!')
+            messages.error(request, 'Password should contain at least one number without special symbols')
     context = {'form': form}
     return render(request, 'base/login_form.html', context)
 
