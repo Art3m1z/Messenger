@@ -69,16 +69,14 @@
                 <p>Hosted By</p>
                 <a href="{% url 'user_profile' room.host.id %}" class="room__author">
                   <div class="avatar avatar--small">
-                    <img src="{% static 'images/avatar.svg' %}" />
+                    <img src="{{room.host.avatar.url}}" />
                   </div>
                   <span>@{{ room.host.username }}</span>
                 </a>
               </div>
-<!--              <div class="room__details">-->
-<!--                Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quasi, tenetur laudantium? Dicta repellendus-->
-<!--                rerum consectetur, voluptatem repudiandae eum ea porro cupiditate provident nulla, deserunt, ab ipsum-->
-<!--                corporis laboriosam deleniti molestias?-->
-<!--              </div>-->
+              <div class="room__details">
+                  {{room.description}}
+              </div>
               <span class="room__topics">{{room.topic}}</span>
             </div>
             <div class="room__conversation">
@@ -89,7 +87,7 @@
                     <div class="thread__author">
                       <a href="{% url 'user_profile' message.user.id %}" class="thread__authorInfo">
                         <div class="avatar avatar--small">
-                          <img src="{% static 'images/avatar.svg' %}" />
+                          <img src="{{message.user.avatar.url}}" />
                         </div>
                         <span>@{{message.user.username}}</span>
                       </a>
@@ -132,7 +130,7 @@
             {% for user in participants %}
             <a href="{% url 'user_profile' user.id %}" class="participant">
               <div class="avatar avatar--medium">
-                <img src="{% static 'images/avatar.svg' %}" />
+                <img src="{{user.avatar.url}}" />
               </div>
               <p>
                 {{user.username}}
@@ -145,5 +143,4 @@
         <!--  End -->
       </div>
     </main>
-    <script src="script.js"></script>
 {% endblock %}
