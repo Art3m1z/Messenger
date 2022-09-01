@@ -14,14 +14,6 @@ def logout_user(request):
     logout(request)
     return redirect('home')
 
-# class LogoutView(View):
-#     template = 'base/login_form.html'
-#     def get(self):
-#         logout(self.request)
-#         return redirect('home')
-#     def post(self):
-#         pass
-
 
 def login_page(request):
     page = 'login'
